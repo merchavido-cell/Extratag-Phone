@@ -11,6 +11,7 @@ jobs:
 
     container:
       image: kivy/buildozer:latest
+      options: --user 1000
 
     steps:
     - name: Checkout Repository
