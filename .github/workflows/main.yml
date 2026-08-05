@@ -7,34 +7,17 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
+    - name: Build APK with Buildozer Action
+      uses: ArtemShedov/buildozer-action@v1
       with:
-        python-version: '3.10'
-
-    - name: Install Dependencies
-      run: |
-        sudo apt update
-        sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libsqlite3-dev cmake libssl-dev
-        pip install --upgrade "buildozer<3.0.0" cython
-
-    - name: Build APK with Buildozer
-      run: |
-        cd Phone
-        export ANDROID_NDK_HOME=""
-        export ANDROID_NDK_ROOT=""
-        export ANDROID_NDK=""
-        buildozer android debug
-      env:
-        ANDROID_NDK_HOME: ""
-        ANDROID_NDK_ROOT: ""
-        ANDROID_NDK: ""
+        workdir: Phone
+        command: buildozer android debug
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
